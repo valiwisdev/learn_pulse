@@ -4,6 +4,7 @@ import 'package:learn_pulse/features/home/presentation/screens/home_screen.dart'
 import 'package:learn_pulse/features/settings/presentation/screens/settings_screen.dart';
 import 'package:learn_pulse/core/widgets/main_navigation.dart';
 
+// StatefulShellRoute is used to create a navigation shell that maintains the state of its child routes.
 
 final router = GoRouter(
   initialLocation: '/auth',
