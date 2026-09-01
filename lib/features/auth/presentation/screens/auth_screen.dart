@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learn_pulse/features/auth/presentation/widgets/custom_text_form_field.dart';
+import 'package:go_router/go_router.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -15,12 +16,13 @@ class _AuthScreenState extends State<AuthScreen> {
   String? _password = '';
 
   void _submitForm() {
-    if (_formKey.currentState?.validate() ?? false) {
-      _formKey.currentState?.save();
-      print('Email: $_email');
-      print('Password: $_password');
+      if (_formKey.currentState?.validate() ?? false) {
+        _formKey.currentState?.save();
+        print('Email: $_email');
+        print('Password: $_password');
+      }
+      context.go('/');
     }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +36,27 @@ class _AuthScreenState extends State<AuthScreen> {
               mainAxisAlignment: .center,
               crossAxisAlignment: .center,
               children: [
-                const Text(
-                  'Welcome',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                Column(
+                  spacing: 15,
+                  children: [
+                    const Text(
+                      'Welcome',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Icon(Icons.edit, size: 80, color: Colors.deepPurple),
+                    const Text(
+                      'Sign in to continue',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
                 ),
-                const Icon(Icons.edit, size: 80, color: Colors.deepPurple),
-                const Text(
-                  'Sign in to continue',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
-                ),
+
                 Form(
                   key: _formKey,
                   child: Padding(
@@ -63,7 +77,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         CustomTextFormField(
                           hintText: 'Password',
                           onSaved: (value) {
-                             _password = value;
+                            _password = value;
                           },
                           obscureText: true,
                         ),
