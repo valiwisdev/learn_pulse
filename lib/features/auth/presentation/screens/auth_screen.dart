@@ -39,6 +39,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
     } catch (error) {
       // Handle error
+      // also add on FirebaseAuthException to handle firebase auth errors and add ScaffoldMessenger to show error messages
     } finally {
       setState(() {
         _isAuthenticating = false;
