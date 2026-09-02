@@ -24,6 +24,12 @@ class MainNavigation extends StatelessWidget {
           NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.go('/auth'); 
+        },
+        child: const Icon(Icons.login),
+      ),
     );
   }
 }

@@ -10,19 +10,59 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final _form = GlobalKey<FormState>();
 
   String? _email = '';
   String? _password = '';
+  bool? _isAuthenticating = false;
+  bool isLogin = true;
 
   void _submitForm() {
-      if (_formKey.currentState?.validate() ?? false) {
-        _formKey.currentState?.save();
-        print('Email: $_email');
-        print('Password: $_password');
-      }
-      context.go('/');
+    final isValid = _form.currentState!.validate();
+
+    if (!isValid) {
+      return;
     }
+
+    _form.currentState!.save();
+
+    try {
+      setState(() {
+        _isAuthenticating = true;
+      });
+
+      if (isLogin) {
+        // Login user with _email and _password using firebase_auth
+      } else {
+        // Sign up user with _email and _password using firebase_auth
+      }
+
+    } catch (error) {
+      // Handle error
+    } finally {
+      setState(() {
+        _isAuthenticating = false;
+      });
+    }
+
+    // check if user 
+  }
+
+  String? _emailValidator(String? value) {
+    if (value == null || value.isEmpty || !value.contains('@')) {
+      return 'Please enter your email';
+    }
+
+    return null;
+  }
+
+  String? _passwordValidator(String? value) {
+    if (value == null || value.isEmpty || value.length < 6) {
+      return 'Please enter your password';
+    }
+
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,30 +81,30 @@ class _AuthScreenState extends State<AuthScreen> {
                   children: [
                     const Text(
                       'Welcome',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(fontSize: 28, fontWeight: .bold),
                     ),
-                    const Icon(Icons.edit, size: 80, color: Colors.deepPurple),
-                    const Text(
-                      'Sign in to continue',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
+                    Icon(
+                      Icons.edit,
+                      size: 80,
+                      color: theme.colorScheme.primary,
+                    ),
+                    Padding(
+                      padding: const .only(bottom: 30),
+                      child: Text(
+                        'Sign in to continue',
+                        style: TextStyle(fontSize: 20, fontWeight: .bold),
                       ),
                     ),
                   ],
                 ),
 
                 Form(
-                  key: _formKey,
+                  key: _form,
                   child: Padding(
-                    padding: const .only(left: 24, right: 24),
+                    padding: const .only(left: 30, right: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 40),
                         CustomTextFormField(
                           hintText: 'Email',
                           onSaved: (value) {
@@ -72,6 +112,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               _email = value;
                             });
                           },
+                          validator: _emailValidator,
                         ),
                         const SizedBox(height: 10),
                         CustomTextFormField(
@@ -82,6 +123,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             });
                           },
                           obscureText: true,
+                          validator: _passwordValidator,
                         ),
                         const SizedBox(height: 32),
                         SizedBox(
