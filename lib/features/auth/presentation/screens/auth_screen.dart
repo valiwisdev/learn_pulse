@@ -77,7 +77,9 @@ class _AuthScreenState extends State<AuthScreen> {
                         CustomTextFormField(
                           hintText: 'Password',
                           onSaved: (value) {
-                            _password = value;
+                            setState(() {
+                              _password = value;
+                            });
                           },
                           obscureText: true,
                         ),
